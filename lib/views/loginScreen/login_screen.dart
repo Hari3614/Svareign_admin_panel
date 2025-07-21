@@ -5,6 +5,7 @@ import 'package:svareignadmin/core/colors/theme_data.dart';
 import 'package:svareignadmin/providers/loginprovider/login_provider.dart';
 import 'package:svareignadmin/utils/validators.dart';
 import 'package:svareignadmin/viewmodel/loginViewModel/login_view_model.dart';
+import 'package:svareignadmin/views/homescreen/homescreen.dart';
 import 'package:svareignadmin/widgets/custom_textfield.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -59,6 +60,12 @@ class LoginScreen extends StatelessWidget {
                               ),
                             ),
                             onPressed: () async {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Homescreen(),
+                                ),
+                              );
                               if (!Validators.isValidEmail(provider.email) ||
                                   !Validators.isValidPassword(
                                     provider.password,
