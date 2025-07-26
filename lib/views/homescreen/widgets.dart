@@ -9,6 +9,7 @@ class SidebarItem extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.voidcallback,
+    required bool isSelected,
   });
 
   @override

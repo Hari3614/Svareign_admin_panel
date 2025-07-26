@@ -1,6 +1,6 @@
 class Validators {
   static bool isValidEmail(String email) {
-    return RegExp(r'^.+@.+\..+\$').hasMatch(email);
+    return RegExp(r'^.+@.+\..+$').hasMatch(email);
   }
 
   static bool isValidPassword(String password) {
