@@ -11,14 +11,6 @@ class UsersPage extends StatefulWidget {
 
 class _UsersPageState extends State<UsersPage> {
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<UserViewModel>().loadUsers();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     final vm = context.watch<UserViewModel>();
 
