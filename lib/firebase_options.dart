@@ -17,20 +17,29 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return android;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for android - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
-        return windows;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -43,42 +52,14 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDKPaMOLi981i1k0iOnySkn8BsEypTK6jE',
-    appId: '1:412848064485:android:812481728a6374c6f7110c',
-    messagingSenderId: '412848064485',
-    projectId: 'svareign-c8744',
-    databaseURL: 'https://svareign-c8744-default-rtdb.firebaseio.com',
-    storageBucket: 'svareign-c8744.firebasestorage.app',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB0zwk-qKQZg7BBZ45VCaOEv0sfbRZAsls',
-    appId: '1:412848064485:ios:a35da21d1eb9f186f7110c',
-    messagingSenderId: '412848064485',
-    projectId: 'svareign-c8744',
-    databaseURL: 'https://svareign-c8744-default-rtdb.firebaseio.com',
-    storageBucket: 'svareign-c8744.firebasestorage.app',
-    iosBundleId: 'com.example.svareignadmin',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyB0zwk-qKQZg7BBZ45VCaOEv0sfbRZAsls',
-    appId: '1:412848064485:ios:a35da21d1eb9f186f7110c',
-    messagingSenderId: '412848064485',
-    projectId: 'svareign-c8744',
-    databaseURL: 'https://svareign-c8744-default-rtdb.firebaseio.com',
-    storageBucket: 'svareign-c8744.firebasestorage.app',
-    iosBundleId: 'com.example.svareignadmin',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
+  static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyDkXHVGIF22wv31C3Z5zUxd59qpywc_ItA',
-    appId: '1:412848064485:web:7c5d9b3303bb2abff7110c',
+    appId: '1:412848064485:web:400db0da847ac823f7110c',
     messagingSenderId: '412848064485',
     projectId: 'svareign-c8744',
     authDomain: 'svareign-c8744.firebaseapp.com',
     databaseURL: 'https://svareign-c8744-default-rtdb.firebaseio.com',
     storageBucket: 'svareign-c8744.firebasestorage.app',
   );
+
 }

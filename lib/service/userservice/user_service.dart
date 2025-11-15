@@ -8,7 +8,7 @@ class UserService {
     try {
       final snapshot =
           await FirebaseFirestore.instance.collection("users").get();
-
+      print('snaoshot:$snapshot');
       return snapshot.docs.map((doc) => UserModel.fromMap(doc.data())).toList();
     } on FirebaseException catch (e) {
       print("FirebaseException: ${e.message}");

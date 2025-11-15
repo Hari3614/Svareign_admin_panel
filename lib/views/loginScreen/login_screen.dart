@@ -5,6 +5,7 @@ import 'package:svareignadmin/providers/loginprovider/login_provider.dart';
 import 'package:svareignadmin/utils/validators.dart';
 import 'package:svareignadmin/viewmodel/loginViewModel/login_view_model.dart';
 import 'package:svareignadmin/views/homescreen/homescreen.dart';
+import 'package:svareignadmin/views/loginScreen/signupscreen/signupscreenn.dart';
 import 'package:svareignadmin/widgets/custom_textfield.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -220,6 +221,27 @@ class LoginScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                          SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Center(child: Text("Don't have an account ?")),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) => const Signupscreenn(),
+                                    ),
+                                  );
+                                },
+                                child: const Text(
+                                  'SignUp',
+                                  style: TextStyle(fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
