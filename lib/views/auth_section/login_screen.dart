@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:svareignadmin/providers/loginprovider/login_provider.dart';
+import 'package:svareignadmin/providers/login_provider/login_provider.dart';
 import 'package:svareignadmin/utils/validators.dart';
-import 'package:svareignadmin/viewmodel/loginViewModel/login_view_model.dart';
-import 'package:svareignadmin/views/homescreen/homescreen.dart';
-import 'package:svareignadmin/views/loginScreen/signupscreen/signupscreenn.dart';
+import 'package:svareignadmin/viewmodel/login_view_model/login_view_model.dart';
+import 'package:svareignadmin/views/home_screen/home_screen.dart';
+import 'package:svareignadmin/views/auth_section/sign_up_screen/sign_up_screen.dart';
 import 'package:svareignadmin/widgets/custom_textfield.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -231,7 +231,7 @@ class LoginScreen extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder:
-                                          (context) => const Signupscreenn(),
+                                          (context) => const SignUpScreen(),
                                     ),
                                   );
                                 },

@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:svareignadmin/model/usermodel/user_model.dart';
+import 'package:svareignadmin/model/user_model/user_model.dart';
 
 class UserService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<List<UserModel>> fetchUsers() async {
     try {

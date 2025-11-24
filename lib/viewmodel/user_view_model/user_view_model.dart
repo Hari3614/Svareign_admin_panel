@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:svareignadmin/model/usermodel/user_model.dart';
-import 'package:svareignadmin/service/userservice/user_service.dart';
+import 'package:svareignadmin/model/user_model/user_model.dart';
+import 'package:svareignadmin/service/user_service/user_service.dart';
 
 class UserViewModel extends ChangeNotifier {
   final UserService _userService = UserService();

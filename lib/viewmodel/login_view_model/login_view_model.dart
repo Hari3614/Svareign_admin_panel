@@ -1,4 +1,4 @@
-import 'package:svareignadmin/providers/loginprovider/login_provider.dart';
+import 'package:svareignadmin/providers/login_provider/login_provider.dart';
 
 class LoginViewModel {
   final LoginProvider provider;

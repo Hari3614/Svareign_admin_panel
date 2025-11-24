@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'firebase_options.dart';
-import 'package:svareignadmin/providers/loginprovider/login_provider.dart';
-import 'package:svareignadmin/viewmodel/userviewmde/user_view_model.dart';
-import 'package:svareignadmin/views/loginScreen/login_screen.dart';
+import 'package:svareignadmin/providers/login_provider/login_provider.dart';
+import 'package:svareignadmin/viewmodel/user_view_model/user_view_model.dart';
+import 'package:svareignadmin/views/auth_section/login_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

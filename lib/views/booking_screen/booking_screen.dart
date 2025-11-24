@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class BookingsPage extends StatefulWidget {
-  const BookingsPage({super.key});
+class BookingScreen extends StatefulWidget {
+  const BookingScreen({super.key});
 
   @override
-  State<BookingsPage> createState() => _BookingsPageState();
+  State<BookingScreen> createState() => _BookingScreenState();
 }
 
-class _BookingsPageState extends State<BookingsPage>
+class _BookingScreenState extends State<BookingScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:svareignadmin/views/adspostingscreen/ads_posting_screen.dart';
-import 'package:svareignadmin/views/bookingscreen/booking_screen.dart';
-import 'package:svareignadmin/views/earningscreen/earning_screen.dart';
-import 'package:svareignadmin/views/homescreen/widgets.dart';
-import 'package:svareignadmin/views/serviceproviderscreen/provider_screen.dart';
-import 'package:svareignadmin/views/userscreen/user_screen.dart';
+import 'package:svareignadmin/views/ads_posting_screen/ads_posting_screen.dart';
+import 'package:svareignadmin/views/booking_screen/booking_screen.dart';
+import 'package:svareignadmin/views/earning_screen/earning_screen.dart';
+import 'package:svareignadmin/widgets/side_bar_item.dart';
+import 'package:svareignadmin/views/service_provider_screen/provider_screen.dart';
+import 'package:svareignadmin/views/user_screen/user_screen.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -20,7 +20,7 @@ class _HomescreenState extends State<Homescreen> {
     const DashboardPage(), // ✅ Dashboard as index 0
     const UsersPage(),
     const ProvidersPage(),
-    const BookingsPage(),
+    const BookingScreen(),
     const AdsPage(),
     const EarningsPage(),
   ];

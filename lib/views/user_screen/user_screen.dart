@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:svareignadmin/viewmodel/userviewmde/user_view_model.dart';
+import 'package:svareignadmin/viewmodel/user_view_model/user_view_model.dart';
 
 class UsersPage extends StatefulWidget {
   const UsersPage({super.key});
