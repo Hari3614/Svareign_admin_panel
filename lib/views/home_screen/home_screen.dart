@@ -3,7 +3,7 @@ import 'package:svareignadmin/views/ads_posting_screen/ads_posting_screen.dart';
 import 'package:svareignadmin/views/booking_screen/booking_screen.dart';
 import 'package:svareignadmin/views/earning_screen/earning_screen.dart';
 import 'package:svareignadmin/widgets/side_bar_item.dart';
-import 'package:svareignadmin/views/service_provider_screen/provider_screen.dart';
+import 'package:svareignadmin/views/service_provider_screen/service_provider_screen.dart';
 import 'package:svareignadmin/views/user_screen/user_screen.dart';
 
 class Homescreen extends StatefulWidget {
@@ -19,7 +19,7 @@ class _HomescreenState extends State<Homescreen> {
   final List<Widget> pages = [
     const DashboardPage(), // ✅ Dashboard as index 0
     const UserScreen(),
-    const ProvidersPage(),
+    const ServiceProviderScreen(),
     const BookingScreen(),
     const AdsPostingScreen(),
     const EarningsPage(),

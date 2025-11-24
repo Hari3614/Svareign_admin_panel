@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:svareignadmin/viewmodel/user_view_model/user_view_model.dart';
-import 'package:svareignadmin/model/user_model/user_model.dart';
+import 'package:svareignadmin/model/service_provider_model/service_provider_model.dart';
+import 'package:svareignadmin/viewmodel/service_provider_view_model/service_provider_view_model.dart';
 
-class UserScreen extends StatefulWidget {
-  const UserScreen({super.key});
+class ServiceProviderScreen extends StatefulWidget {
+  const ServiceProviderScreen({super.key});
 
   @override
-  State<UserScreen> createState() => _UserScreenState();
+  State<ServiceProviderScreen> createState() => _ServiceProviderScreenState();
 }
 
-class _UserScreenState extends State<UserScreen> {
+class _ServiceProviderScreenState extends State<ServiceProviderScreen> {
   final TextEditingController _searchController = TextEditingController();
   final String _sortBy = 'Name';
-  List<UserModel> filteredUsers = [];
+  List<ServiceProviderModel> filteredUsers = [];
 
   @override
   void initState() {
     super.initState();
-    final vm = context.read<UserViewModel>();
-    Future.microtask(() => vm.loadUsers());
+    final vm = context.read<ServiceProviderViewModel>();
+    Future.microtask(() => vm.loadServiceProviders());
 
     _searchController.addListener(() {
       setState(() {
         final query = _searchController.text.toLowerCase();
         filteredUsers =
-            vm.users
+            vm.serviceProviders
                 .where(
                   (user) =>
                       user.name.toLowerCase().contains(query) ||
@@ -39,10 +39,10 @@ class _UserScreenState extends State<UserScreen> {
   }
 
   void _sortUsers() {
-    List<UserModel> listToSort =
+    List<ServiceProviderModel> listToSort =
         filteredUsers.isNotEmpty
             ? filteredUsers
-            : context.read<UserViewModel>().users;
+            : context.read<ServiceProviderViewModel>().serviceProviders;
 
     switch (_sortBy) {
       case 'Name':
@@ -70,7 +70,10 @@ class _UserScreenState extends State<UserScreen> {
     return defaultSize * 0.7; // Mobile / small screens
   }
 
-  void _showUserIdCard(BuildContext context, UserModel user) {
+  void _showUserIdCard(
+    BuildContext context,
+    ServiceProviderModel serviceProvider,
+  ) {
     final size = MediaQuery.of(context).size;
 
     showDialog(
@@ -119,7 +122,7 @@ class _UserScreenState extends State<UserScreen> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      user.name,
+                      serviceProvider.name,
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -143,7 +146,7 @@ class _UserScreenState extends State<UserScreen> {
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            user.email,
+                            serviceProvider.email,
                             style: const TextStyle(
                               fontSize: 14,
                               color: Colors.black87,
@@ -168,7 +171,7 @@ class _UserScreenState extends State<UserScreen> {
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            user.phone,
+                            serviceProvider.phone,
                             style: const TextStyle(
                               fontSize: 14,
                               color: Colors.black87,
@@ -193,7 +196,7 @@ class _UserScreenState extends State<UserScreen> {
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            user.place,
+                            serviceProvider.place,
                             style: const TextStyle(
                               fontSize: 14,
                               color: Colors.black87,
@@ -212,13 +215,13 @@ class _UserScreenState extends State<UserScreen> {
                       ),
                       decoration: BoxDecoration(
                         color:
-                            user.role.toLowerCase() == 'admin'
+                            serviceProvider.role.toLowerCase() == 'admin'
                                 ? Colors.redAccent
                                 : Colors.blueAccent,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
-                        user.role.toUpperCase(),
+                        serviceProvider.role.toUpperCase(),
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -260,16 +263,16 @@ class _UserScreenState extends State<UserScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.watch<UserViewModel>();
+    final vm = context.watch<ServiceProviderViewModel>();
     final size = MediaQuery.of(context).size;
     final usersToShow =
         filteredUsers.isNotEmpty || _searchController.text.isNotEmpty
             ? filteredUsers
-            : vm.users;
+            : vm.serviceProviders;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("All Customers"),
+        title: const Text("All Service Providers"),
         backgroundColor: Colors.grey.shade100,
       ),
       body: Column(
@@ -314,7 +317,7 @@ class _UserScreenState extends State<UserScreen> {
 
                         itemCount: usersToShow.length,
                         itemBuilder: (context, index) {
-                          final user = usersToShow[index];
+                          final serviceProvider = usersToShow[index];
                           return Card(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
@@ -347,7 +350,7 @@ class _UserScreenState extends State<UserScreen> {
                                           children: [
                                             Flexible(
                                               child: Text(
-                                                user.name,
+                                                serviceProvider.name,
                                                 style: TextStyle(
                                                   fontSize:
                                                       _getResponsiveFontSize(
@@ -362,7 +365,7 @@ class _UserScreenState extends State<UserScreen> {
                                             const SizedBox(height: 2),
                                             Flexible(
                                               child: Text(
-                                                user.email,
+                                                serviceProvider.email,
                                                 style: TextStyle(
                                                   fontSize:
                                                       _getResponsiveFontSize(
@@ -376,7 +379,7 @@ class _UserScreenState extends State<UserScreen> {
                                             ),
                                             Flexible(
                                               child: Text(
-                                                user.phone,
+                                                serviceProvider.phone,
                                                 style: TextStyle(
                                                   fontSize:
                                                       _getResponsiveFontSize(
@@ -402,7 +405,8 @@ class _UserScreenState extends State<UserScreen> {
                                           ),
                                           decoration: BoxDecoration(
                                             color:
-                                                user.role.toLowerCase() ==
+                                                serviceProvider.role
+                                                            .toLowerCase() ==
                                                         'admin'
                                                     ? Colors.redAccent
                                                     : Colors.blueAccent,
@@ -412,7 +416,8 @@ class _UserScreenState extends State<UserScreen> {
                                           ),
                                           child: FittedBox(
                                             child: Text(
-                                              user.role.toUpperCase(),
+                                              serviceProvider.role
+                                                  .toUpperCase(),
                                               style: const TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
@@ -426,7 +431,7 @@ class _UserScreenState extends State<UserScreen> {
                                 ),
                                 // View Button at Top Right
                                 Positioned(
-                                  top: 8,
+                                  top: 2,
                                   right: 8,
                                   child: IconButton(
                                     icon: const Icon(
@@ -435,7 +440,7 @@ class _UserScreenState extends State<UserScreen> {
                                     ),
                                     tooltip: 'View Details',
                                     onPressed: () {
-                                      _showUserIdCard(context, user);
+                                      _showUserIdCard(context, serviceProvider);
                                     },
                                   ),
                                 ),

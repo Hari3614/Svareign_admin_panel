@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:svareignadmin/model/user_model/user_model.dart';
 import 'package:svareignadmin/service/user_service/user_service.dart';
@@ -17,7 +19,7 @@ class UserViewModel extends ChangeNotifier {
     try {
       _users = await _userService.fetchUsers();
     } catch (e) {
-      print("Error fetching users: $e");
+      log("Error fetching users: $e");
     }
 
     _isLoading = false;

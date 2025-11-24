@@ -73,5 +73,4 @@ class LoginProvider extends ChangeNotifier {
       return false;
     }
   }
-
 }

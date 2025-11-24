@@ -10,6 +10,11 @@ class EarningsPage extends StatefulWidget {
 class _EarningsPageState extends State<EarningsPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Center(
+      child: Text(
+        'No earnings found',
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      ),
+    );
   }
 }

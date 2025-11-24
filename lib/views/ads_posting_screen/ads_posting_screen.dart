@@ -7,7 +7,7 @@ class AdsPostingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
       child: Text(
-        'No data found',
+        'No ads found',
         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
       ),
     );
