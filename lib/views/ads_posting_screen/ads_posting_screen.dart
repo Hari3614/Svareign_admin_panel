@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class AdsPage extends StatefulWidget {
-  const AdsPage({super.key});
+class AdsPostingScreen extends StatelessWidget {
+  const AdsPostingScreen({super.key});
 
-  @override
-  State<AdsPage> createState() => _State();
-}
-
-class _State extends State<AdsPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Center(
+      child: Text(
+        'No data found',
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      ),
+    );
   }
 }

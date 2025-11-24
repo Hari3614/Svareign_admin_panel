@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 import 'firebase_options.dart';
 import 'package:svareignadmin/providers/login_provider/login_provider.dart';
 import 'package:svareignadmin/viewmodel/user_view_model/user_view_model.dart';
@@ -14,16 +13,16 @@ Future<void> main() async {
   // Initialize Firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // Quick Firestore test
-  try {
-    final snapshot = await FirebaseFirestore.instance.collection('users').get();
-    print("Fetched ${snapshot.docs.length} users");
-    for (var doc in snapshot.docs) {
-      print("Doc: ${doc.id} => ${doc.data()}");
-    }
-  } catch (e) {
-    print("Error fetching users: $e");
-  }
+  // // Quick Firestore test
+  // try {
+  //   final snapshot = await FirebaseFirestore.instance.collection('users').get();
+  //   print("Fetched ${snapshot.docs.length} users");
+  //   for (var doc in snapshot.docs) {
+  //     print("Doc: ${doc.id} => ${doc.data()}");
+  //   }
+  // } catch (e) {
+  //   print("Error fetching users: $e");
+  // }
 
   // Run the app once
   runApp(const MyApp());

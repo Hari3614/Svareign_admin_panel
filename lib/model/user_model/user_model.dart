@@ -5,20 +5,24 @@ class UserModel {
   final String name;
   final String email;
   final String phone;
+  final String place;
   final String role;
   final double latitude;
   final double longitude;
   final DateTime createdAt;
+  final String? imageUrl;
 
   UserModel({
     required this.uid,
     required this.name,
+    required this.place,
     required this.email,
     required this.phone,
     required this.role,
     required this.latitude,
     required this.longitude,
     required this.createdAt,
+    this.imageUrl,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> data) {
@@ -27,10 +31,12 @@ class UserModel {
       name: data['name'],
       email: data['email'],
       phone: data['phone'],
+      place: data['place'],
       role: data['role'],
       latitude: data['location']['latitude'],
       longitude: data['location']['longitude'],
       createdAt: (data['createdAt'] as Timestamp).toDate(),
+      imageUrl: data['imageUrl'],
     );
   }
 }

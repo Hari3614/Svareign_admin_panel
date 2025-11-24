@@ -18,10 +18,10 @@ class _HomescreenState extends State<Homescreen> {
 
   final List<Widget> pages = [
     const DashboardPage(), // ✅ Dashboard as index 0
-    const UsersPage(),
+    const UserScreen(),
     const ProvidersPage(),
     const BookingScreen(),
-    const AdsPage(),
+    const AdsPostingScreen(),
     const EarningsPage(),
   ];
 

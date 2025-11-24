@@ -91,14 +91,14 @@ class SignUpScreen extends StatelessWidget {
                       52,
                     ).withOpacity(0.3),
                   ),
-                  Expanded(
+                  const Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 32),
+                      padding: EdgeInsets.symmetric(horizontal: 32),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Create Account',
                             style: TextStyle(
                               fontSize: 25,
@@ -106,15 +106,15 @@ class SignUpScreen extends StatelessWidget {
                               color: Color.fromARGB(255, 0, 0, 0),
                             ),
                           ),
-                          const SizedBox(height: 6),
-                          const Text(
+                          SizedBox(height: 6),
+                          Text(
                             'Create a New account',
                             style: TextStyle(
                               fontSize: 14,
                               color: Color.fromARGB(179, 0, 0, 0),
                             ),
                           ),
-                          const SizedBox(height: 24),
+                          SizedBox(height: 24),
                         ],
                       ),
                     ),
