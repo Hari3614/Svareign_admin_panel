@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:svareignadmin/views/ads_posting_screen/ads_posting_screen.dart';
 import 'package:svareignadmin/views/booking_screen/booking_screen.dart';
+import 'package:svareignadmin/views/create_ad_screen/create_ad_screen.dart';
 import 'package:svareignadmin/views/earning_screen/earning_screen.dart';
 import 'package:svareignadmin/widgets/side_bar_item.dart';
 import 'package:svareignadmin/views/service_provider_screen/service_provider_screen.dart';
@@ -21,7 +21,7 @@ class _HomescreenState extends State<Homescreen> {
     const UserScreen(),
     const ServiceProviderScreen(),
     const BookingScreen(),
-    const AdsPostingScreen(),
+    const CreateAdScreen(),
     const EarningsPage(),
   ];
 
