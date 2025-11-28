@@ -19,6 +19,8 @@ dependencies:
     sdk: flutter
   flutter_dropzone: ^4.2.1
   google_fonts: ^6.2.1
+  http: ^1.6.0
+  intl: ^0.20.2
   lottie: ^3.3.1
   provider: ^6.1.5
 

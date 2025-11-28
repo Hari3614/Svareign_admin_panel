@@ -6,6 +6,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
+import 'dart:convert';
+import 'dart:js' as js;
+
+// import 'package:http/http.dart' as http;
+
 class CreateAdsScreen extends StatefulWidget {
   const CreateAdsScreen({super.key});
 
@@ -14,15 +19,71 @@ class CreateAdsScreen extends StatefulWidget {
 }
 
 class _CreateAdsScreenState extends State<CreateAdsScreen> {
+  // String googleApiKey = "AIzaSyDqpOdQdfhCp5iv-2TdmOCYJwEI0K_O8IY";
+
+  bool isLoading = false;
+  double? selectedLat;
+  double? selectedLng;
+  String adminUid = "";
+  String adminName = "";
+  String adminEmail = "";
+  List<PlatformFile> selectedFiles = [];
+  List<dynamic> placeSuggestions = [];
+  bool isSearchingLocation = false;
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController redirectUrlController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
-  bool isLoading = false;
 
-  String adminUid = "";
-  String adminName = "";
-  String adminEmail = "";
+  // Future<void> fetchLocationSuggestions(String input) async {
+  //   if (input.isEmpty) {
+  //     setState(() => placeSuggestions = []);
+  //     return;
+  //   }
+
+  //   // final url =
+  //   //     "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=$googleApiKey&components=country:in";
+
+  //   setState(() => isSearchingLocation = true);
+
+  //   final response = await http.get(Uri.parse(url));
+
+  //   if (response.statusCode == 200) {
+  //     final data = jsonDecode(response.body);
+  //     setState(() {
+  //       placeSuggestions = data["predictions"];
+  //     });
+  //   }
+
+  //   setState(() => isSearchingLocation = false);
+  // }
+
+  // Future<void> fetchPlaceDetails(String placeId) async {
+  //   final url =
+  //       "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$googleApiKey";
+
+  //   final response = await http.get(Uri.parse(url));
+
+  //   if (response.statusCode == 200) {
+  //     final data = jsonDecode(response.body);
+
+  //     final result = data["result"];
+
+  //     final lat = result["geometry"]["location"]["lat"];
+  //     final lng = result["geometry"]["location"]["lng"];
+  //     final formattedAddress = result["formatted_address"];
+
+  //     setState(() {
+  //       selectedLat = lat;
+  //       selectedLng = lng;
+  //       locationController.text = formattedAddress;
+  //       placeSuggestions = [];
+  //     });
+
+  //     log("Selected Address: $formattedAddress");
+  //     log("Lat: $lat  Lng: $lng");
+  //   }
+  // }
 
   Future<void> loadAdminDetails() async {
     final user = FirebaseAuth.instance.currentUser;
@@ -63,7 +124,7 @@ class _CreateAdsScreenState extends State<CreateAdsScreen> {
       "ads/${DateTime.now().millisecondsSinceEpoch}_${file.name}",
     );
 
-    // ⭐ FIX: Upload with Metadata
+    // FIX: Upload with Metadata
     final uploadTask = await ref.putData(file.bytes!, metadata);
 
     return await uploadTask.ref.getDownloadURL();
@@ -102,8 +163,8 @@ class _CreateAdsScreenState extends State<CreateAdsScreen> {
         "mediaUrls": mediaUrls,
         "redirectUrl": redirectUrlController.text.trim(),
         "location": {
-          "lat": 0,
-          "lng": 0,
+          "lat": selectedLat ?? 0,
+          "lng": selectedLng ?? 0,
           "address": locationController.text.trim(),
         },
         "createdAt": FieldValue.serverTimestamp(),
@@ -113,7 +174,6 @@ class _CreateAdsScreenState extends State<CreateAdsScreen> {
         "status": "active",
       });
       if (!context.mounted) return;
-
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Ad Published Successfully!")),
       );
@@ -132,15 +192,62 @@ class _CreateAdsScreenState extends State<CreateAdsScreen> {
     setState(() => isLoading = false);
   }
 
+  void handleAutocompleteResult(dynamic data) {
+    final decoded = jsonDecode(data as String);
+
+    setState(() {
+      placeSuggestions = decoded;
+    });
+  }
+
+  void handlePlaceDetailResult(dynamic data) {
+    final decoded = jsonDecode(data as String);
+
+    if (decoded == null || decoded is! Map) return;
+
+    final lat = decoded["geometry"]["location"]["lat"];
+    final lng = decoded["geometry"]["location"]["lng"];
+    final address = decoded["formatted_address"];
+
+    setState(() {
+      selectedLat = lat;
+      selectedLng = lng;
+      locationController.text = address;
+      placeSuggestions = [];
+    });
+  }
+
+  void fetchSuggestions(String input) {
+    js.context.callMethod("getPlaceSuggestions", [
+      input,
+      "handleAutocompleteResult",
+    ]);
+  }
+
+  void fetchPlaceDetail(String placeId) {
+    js.context.callMethod("getPlaceDetails", [
+      placeId,
+      "handlePlaceDetailResult",
+    ]);
+  }
+
   @override
   void initState() {
     super.initState();
+
+    // Register JS callbacks
+    js.context["handleAutocompleteResult"] = handleAutocompleteResult;
+    js.context["handlePlaceDetailResult"] = handlePlaceDetailResult;
+
+    // Initialize Google JS services (defined in index.html)
+    js.context.callMethod("initGoogleServices");
+
     loadAdminDetails();
     log("AUTH UID = ${FirebaseAuth.instance.currentUser?.uid}");
   }
 
-  static const imageMaxSize = 5 * 1024 * 1024; // 5MB
-  static const videoMaxSize = 20 * 1024 * 1024; // 20MB
+  static const imageMaxSize = 10 * 1024 * 1024; // 10MB
+  static const videoMaxSize = 30 * 1024 * 1024; // 30MB
 
   void _showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -188,8 +295,6 @@ class _CreateAdsScreenState extends State<CreateAdsScreen> {
       });
     }
   }
-
-  List<PlatformFile> selectedFiles = [];
 
   @override
   Widget build(BuildContext context) {
@@ -409,22 +514,43 @@ class _CreateAdsScreenState extends State<CreateAdsScreen> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10),
-
-                TextField(
-                  controller: locationController,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    hintText: "Search location",
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.location_on_outlined),
-                      onPressed: () {
-                        // open google map search modal
-                      },
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextField(
+                      controller: locationController,
+                      onChanged: (value) => fetchSuggestions(value),
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: "Search location",
+                      ),
                     ),
-                  ),
-                ),
 
+                    if (placeSuggestions.isNotEmpty)
+                      Container(
+                        margin: const EdgeInsets.only(top: 4),
+                        constraints: const BoxConstraints(maxHeight: 250),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: ListView.builder(
+                          itemCount: placeSuggestions.length,
+                          itemBuilder: (context, index) {
+                            final item = placeSuggestions[index];
+
+                            return ListTile(
+                              title: Text(item["description"]),
+                              onTap: () {
+                                fetchPlaceDetail(item["place_id"]);
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                  ],
+                ),
                 const SizedBox(height: 30),
 
                 // ------------------ PUBLISH BUTTON ------------------
