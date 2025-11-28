@@ -39,46 +39,29 @@ class AdsListScreen extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 15),
               elevation: 2,
               child: ListTile(
-                leading:
-                    media.endsWith(".mp4") || media.endsWith(".mov")
-                        ? const Icon(Icons.videocam, size: 40)
-                        : ClipRRect(
-                          borderRadius: BorderRadius.circular(6),
-                          child: Image.network(
-                            media,
-                            width: 60,
-                            height: 60,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-
+                leading: _buildMediaThumbnail(media),
                 title: Text(ad["title"]),
                 subtitle: Text(
                   ad["description"],
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // 👁 View Button
+                    /// VIEW BUTTON
                     IconButton(
                       icon: const Icon(
                         Icons.remove_red_eye,
-                        color: Colors.blue,
+                        color: Colors.grey,
                       ),
-                      onPressed: () {
-                        _showAdDetailsPopup(context, ad);
-                      },
+                      onPressed: () => _showAdDetailsPopup(context, ad),
                     ),
 
-                    // ❌ Delete Button (with confirmation)
+                    /// DELETE BUTTON
                     IconButton(
                       icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () {
-                        _confirmDelete(context, ad.id);
-                      },
+                      onPressed: () => _confirmDelete(context, ad.id),
                     ),
                   ],
                 ),
@@ -90,13 +73,30 @@ class AdsListScreen extends StatelessWidget {
     );
   }
 
-  String formatDateTime(DateTime? date) {
-    if (date == null) return "Unknown";
-    return DateFormat("dd MMM yyyy, hh:mm a").format(date);
+  // -----------------------------------------------
+  // MEDIA THUMBNAIL
+  // -----------------------------------------------
+  Widget _buildMediaThumbnail(String mediaUrl) {
+    final isVideo = mediaUrl.endsWith(".mp4") || mediaUrl.endsWith(".mov");
+
+    if (isVideo) {
+      return const Icon(Icons.videocam, size: 40);
+    }
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(6),
+      child: Image.network(
+        mediaUrl,
+        width: 60,
+        height: 60,
+        fit: BoxFit.cover,
+        errorBuilder: (_, __, ___) => const Icon(Icons.image, size: 40),
+      ),
+    );
   }
 
   // -----------------------------------------------
-  // DELETE CONFIRMATION DIALOG
+  // DELETE CONFIRMATION POP-UP
   // -----------------------------------------------
   void _confirmDelete(BuildContext context, String docId) {
     showDialog(
@@ -119,12 +119,12 @@ class AdsListScreen extends StatelessWidget {
                       .doc(docId)
                       .delete();
 
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Ad deleted successfully")),
-                    );
-                  }
+                  if (!context.mounted) return;
+
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Ad deleted successfully")),
+                  );
                 },
               ),
             ],
@@ -133,11 +133,10 @@ class AdsListScreen extends StatelessWidget {
   }
 
   // -----------------------------------------------
-  // AD DETAILS POPUP (WITH IMAGE + DETAILS)
+  // AD DETAILS POPUP
   // -----------------------------------------------
   void _showAdDetailsPopup(BuildContext context, DocumentSnapshot ad) {
     final media = ad["mediaUrls"][0];
-
     final isVideo = media.endsWith(".mp4") || media.endsWith(".mov");
 
     final createdAt =
@@ -159,19 +158,19 @@ class AdsListScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // ⭐ Media Preview Large
+                    /// Media Preview Large
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child:
                           isVideo
                               ? Container(
-                                color: Colors.black12,
                                 height: 250,
+                                color: Colors.black26,
                                 child: const Center(
                                   child: Icon(
                                     Icons.videocam,
                                     size: 80,
-                                    color: Colors.grey,
+                                    color: Colors.white70,
                                   ),
                                 ),
                               )
@@ -182,6 +181,7 @@ class AdsListScreen extends StatelessWidget {
                                 fit: BoxFit.cover,
                               ),
                     ),
+
                     const SizedBox(height: 16),
 
                     Text(
@@ -199,7 +199,6 @@ class AdsListScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
 
-                    // LOCATION
                     const Text(
                       "Location:",
                       style: TextStyle(
@@ -210,11 +209,11 @@ class AdsListScreen extends StatelessWidget {
                     Text(ad["location"]["address"] ?? "Not provided"),
                     if (ad["location"]["lat"] != 0)
                       Text(
-                        "Lat: ${ad["location"]["lat"]}, Lng: ${ad["location"]["lng"]}",
+                        "Lat: ${ad["location"]["lat"]},  Lng: ${ad["location"]["lng"]}",
                       ),
+
                     const SizedBox(height: 16),
 
-                    // CREATED AT
                     const Text(
                       "Created At:",
                       style: TextStyle(
@@ -222,11 +221,14 @@ class AdsListScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    // Text(createdAt != null ? createdAt.toString() : "Unknown"),
-                    Text(formatDateTime(createdAt)),
+                    Text(
+                      createdAt != null
+                          ? DateFormat("dd MMM yyyy, hh:mm a").format(createdAt)
+                          : "Unknown",
+                    ),
+
                     const SizedBox(height: 16),
 
-                    // CREATED BY
                     const Text(
                       "Created By:",
                       style: TextStyle(
@@ -236,6 +238,7 @@ class AdsListScreen extends StatelessWidget {
                     ),
                     Text(ad["createdByName"]),
                     Text(ad["createdByEmail"]),
+
                     const SizedBox(height: 20),
 
                     Align(
@@ -253,101 +256,3 @@ class AdsListScreen extends StatelessWidget {
     );
   }
 }
-
-// import 'dart:developer';
-
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:flutter/material.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-
-// class AdsListScreen extends StatelessWidget {
-//   const AdsListScreen({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final uid = FirebaseAuth.instance.currentUser!.uid;
-
-//     return StreamBuilder(
-//       stream:
-//           FirebaseFirestore.instance
-//               .collection("ads")
-//               .where("createdByUid", isEqualTo: uid)
-//               .orderBy("createdAt", descending: true)
-//               .snapshots(),
-//       builder: (context, snapshot) {
-//         log("📌 Snapshot received");
-//         log("📌 Has data: ${snapshot.hasData}");
-//         log("📌 Docs count: ${snapshot.data?.docs.length}");
-//         log("📌 Error: ${snapshot.error}");
-
-//         if (snapshot.connectionState == ConnectionState.waiting) {
-//           log("📌 Waiting for data...");
-//           return const Center(child: CircularProgressIndicator());
-//         }
-
-//         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-//           log("❌ No documents found for UID: $uid");
-//           return const Center(child: Text("No ads uploaded yet"));
-//         }
-
-//         final ads = snapshot.data!.docs;
-//         log("✅ Loaded ${ads.length} ads");
-
-//         // your listview stays same...
-
-//         return ListView.builder(
-//           padding: const EdgeInsets.all(16),
-//           itemCount: ads.length,
-//           itemBuilder: (context, index) {
-//             final ad = ads[index];
-//             final media = ad["mediaUrls"][0]; // show first
-
-//             // ⭐ Log the media URL for debugging
-//             log("🖼️ Media for ad ${ad.id}: $media");
-
-//             return Card(
-//               margin: const EdgeInsets.only(bottom: 15),
-//               child: ListTile(
-//                 leading:
-//                     media.endsWith(".mp4") || media.endsWith(".mov")
-//                         ? const Icon(Icons.videocam, size: 40)
-//                         : Image.network(
-//                           media,
-//                           width: 60,
-//                           height: 60,
-//                           fit: BoxFit.cover,
-//                           errorBuilder: (context, error, stackTrace) {
-//                             log("⚠️ Failed to load image: $media");
-
-//                             return Image.asset(
-//                               "assets/images/dummy_ad.png",
-//                               width: 60,
-//                               height: 60,
-//                               fit: BoxFit.cover,
-//                             );
-//                           },
-//                         ),
-//                 title: Text(ad["title"]),
-//                 subtitle: Text(ad["description"]),
-//                 trailing: IconButton(
-//                   icon: const Icon(Icons.delete, color: Colors.red),
-//                   onPressed: () async {
-//                     await FirebaseFirestore.instance
-//                         .collection("ads")
-//                         .doc(ad.id)
-//                         .delete();
-//                     if (!context.mounted) return;
-
-//                     ScaffoldMessenger.of(
-//                       context,
-//                     ).showSnackBar(const SnackBar(content: Text("Ad deleted")));
-//                   },
-//                 ),
-//               ),
-//             );
-//           },
-//         );
-//       },
-//     );
-//   }
-// }

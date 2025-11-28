@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:svareignadmin/viewmodel/ads_view_model/ads_view_model.dart';
 import 'package:svareignadmin/viewmodel/service_provider_view_model/service_provider_view_model.dart';
 import 'firebase_options.dart';
 import 'package:svareignadmin/providers/login_provider/login_provider.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => LoginProvider()),
         ChangeNotifierProvider(create: (_) => UserViewModel()),
         ChangeNotifierProvider(create: (_) => ServiceProviderViewModel()),
+        ChangeNotifierProvider(create: (_) => AdsViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
